@@ -9,9 +9,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import ru.macroplus.webplatform.dto.task.TaskDto;
 import timber.log.Timber;
 import uk.co.ribot.androidboilerplate.data.DataManager;
-import uk.co.ribot.androidboilerplate.data.model.Ribot;
 import uk.co.ribot.androidboilerplate.injection.ConfigPersistent;
 import uk.co.ribot.androidboilerplate.ui.base.BasePresenter;
 import uk.co.ribot.androidboilerplate.util.RxUtil;
@@ -41,17 +41,17 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     public void loadRibots() {
         checkViewAttached();
         RxUtil.dispose(mDisposable);
-        mDataManager.getRibots()
+        mDataManager.getTasks()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<List<Ribot>>() {
+                .subscribe(new Observer<List<TaskDto>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
                         mDisposable = d;
                     }
 
                     @Override
-                    public void onNext(@NonNull List<Ribot> ribots) {
+                    public void onNext(@NonNull List<TaskDto> ribots) {
                         if (ribots.isEmpty()) {
                             getMvpView().showRibotsEmpty();
                         } else {

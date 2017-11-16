@@ -5,61 +5,38 @@ import android.database.Cursor;
 
 import java.util.Date;
 
-import uk.co.ribot.androidboilerplate.data.model.Name;
-import uk.co.ribot.androidboilerplate.data.model.Profile;
+import ru.macroplus.webplatform.dto.task.TaskDto;
 
 public class Db {
 
     public Db() { }
 
     public abstract static class RibotProfileTable {
-        public static final String TABLE_NAME = "ribot_profile";
+        public static final String TABLE_NAME = "task_dto";
 
-        public static final String COLUMN_EMAIL = "email";
-        public static final String COLUMN_FIRST_NAME = "first_name";
-        public static final String COLUMN_LAST_NAME = "last_name";
-        public static final String COLUMN_HEX_COLOR = "hex_color";
-        public static final String COLUMN_DATE_OF_BIRTH = "date_of_birth";
-        public static final String COLUMN_AVATAR = "avatar";
-        public static final String COLUMN_BIO = "bio";
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_TITLE = "title";
 
         public static final String CREATE =
                 "CREATE TABLE " + TABLE_NAME + " (" +
-                        COLUMN_EMAIL + " TEXT PRIMARY KEY, " +
-                        COLUMN_FIRST_NAME + " TEXT NOT NULL, " +
-                        COLUMN_LAST_NAME + " TEXT NOT NULL, " +
-                        COLUMN_HEX_COLOR + " TEXT NOT NULL, " +
-                        COLUMN_DATE_OF_BIRTH + " INTEGER NOT NULL, " +
-                        COLUMN_AVATAR + " TEXT, " +
-                        COLUMN_BIO + " TEXT" +
+                        COLUMN_ID + " INTEGER PRIMARY KEY, " +
+                        COLUMN_TITLE + " TEXT NOT NULL " +
+
                 " ); ";
 
-        public static ContentValues toContentValues(Profile profile) {
+        public static ContentValues toContentValues(TaskDto taskDto) {
             ContentValues values = new ContentValues();
-            values.put(COLUMN_EMAIL, profile.email());
-            values.put(COLUMN_FIRST_NAME, profile.name().first());
-            values.put(COLUMN_LAST_NAME, profile.name().last());
-            values.put(COLUMN_HEX_COLOR, profile.hexColor());
-            values.put(COLUMN_DATE_OF_BIRTH, profile.dateOfBirth().getTime());
-            values.put(COLUMN_AVATAR, profile.avatar());
-            if (profile.bio() != null) values.put(COLUMN_BIO, profile.bio());
+            values.put(COLUMN_ID, taskDto.getId());
+            values.put(COLUMN_TITLE, taskDto.getTitle());
             return values;
         }
 
-        public static Profile parseCursor(Cursor cursor) {
-            Name name = Name.create(
-                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FIRST_NAME)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LAST_NAME)));
-            long dobTime = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_DATE_OF_BIRTH));
+        public static TaskDto parseCursor(Cursor cursor) {
+            TaskDto taskDto = new TaskDto();
+            taskDto.setId((cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))));
+            taskDto.setTitle((cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE))));
 
-            return Profile.builder()
-                    .setName(name)
-                    .setEmail(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EMAIL)))
-                    .setHexColor(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HEX_COLOR)))
-                    .setDateOfBirth(new Date(dobTime))
-                    .setAvatar(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_AVATAR)))
-                    .setBio(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_BIO)))
-                    .build();
+            return taskDto;
         }
     }
 }

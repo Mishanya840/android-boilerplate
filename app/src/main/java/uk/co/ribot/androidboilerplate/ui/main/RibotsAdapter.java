@@ -14,19 +14,19 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.macroplus.webplatform.dto.task.TaskDto;
 import uk.co.ribot.androidboilerplate.R;
-import uk.co.ribot.androidboilerplate.data.model.Ribot;
 
 public class RibotsAdapter extends RecyclerView.Adapter<RibotsAdapter.RibotViewHolder> {
 
-    private List<Ribot> mRibots;
+    private List<TaskDto> mRibots;
 
     @Inject
     public RibotsAdapter() {
         mRibots = new ArrayList<>();
     }
 
-    public void setRibots(List<Ribot> ribots) {
+    public void setRibots(List<TaskDto> ribots) {
         mRibots = ribots;
     }
 
@@ -39,11 +39,10 @@ public class RibotsAdapter extends RecyclerView.Adapter<RibotsAdapter.RibotViewH
 
     @Override
     public void onBindViewHolder(final RibotViewHolder holder, int position) {
-        Ribot ribot = mRibots.get(position);
-        holder.hexColorView.setBackgroundColor(Color.parseColor(ribot.profile().hexColor()));
-        holder.nameTextView.setText(String.format("%s %s",
-                ribot.profile().name().first(), ribot.profile().name().last()));
-        holder.emailTextView.setText(ribot.profile().email());
+        TaskDto ribot = mRibots.get(position);
+//        holder.hexColorView.setBackgroundColor(Color.parseColor(ribot.profile().hexColor()));
+        holder.nameTextView.setText(ribot.getTitle());
+        holder.emailTextView.setText("none");
     }
 
     @Override

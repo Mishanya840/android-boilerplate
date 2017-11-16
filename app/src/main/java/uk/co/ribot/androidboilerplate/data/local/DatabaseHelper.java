@@ -20,7 +20,7 @@ import io.reactivex.Scheduler;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import uk.co.ribot.androidboilerplate.data.model.Ribot;
+import ru.macroplus.webplatform.dto.task.TaskDto;
 
 @Singleton
 public class DatabaseHelper {
@@ -42,19 +42,20 @@ public class DatabaseHelper {
         return mDb;
     }
 
-    public Observable<Ribot> setRibots(final Collection<Ribot> newRibots) {
-        return Observable.create(new ObservableOnSubscribe<Ribot>() {
+    public Observable<TaskDto> setTasks(final Collection<TaskDto> newTasks) {
+        return Observable.create(new ObservableOnSubscribe<TaskDto>() {
             @Override
-            public void subscribe(ObservableEmitter<Ribot> emitter) throws Exception {
+            public void subscribe(ObservableEmitter<TaskDto> emitter) throws Exception {
                 if (emitter.isDisposed()) return;
                 BriteDatabase.Transaction transaction = mDb.newTransaction();
                 try {
                     mDb.delete(Db.RibotProfileTable.TABLE_NAME, null);
-                    for (Ribot ribot : newRibots) {
+                    for (TaskDto task : newTasks) {
+                        System.out.println(task.toString());
                         long result = mDb.insert(Db.RibotProfileTable.TABLE_NAME,
-                                Db.RibotProfileTable.toContentValues(ribot.profile()),
+                                Db.RibotProfileTable.toContentValues(task),
                                 SQLiteDatabase.CONFLICT_REPLACE);
-                        if (result >= 0) emitter.onNext(ribot);
+                        if (result >= 0) emitter.onNext(task);
                     }
                     transaction.markSuccessful();
                     emitter.onComplete();
@@ -65,13 +66,13 @@ public class DatabaseHelper {
         });
     }
 
-    public Observable<List<Ribot>> getRibots() {
+    public Observable<List<TaskDto>> getTasks() {
         return mDb.createQuery(Db.RibotProfileTable.TABLE_NAME,
                 "SELECT * FROM " + Db.RibotProfileTable.TABLE_NAME)
-                .mapToList(new Function<Cursor, Ribot>() {
+                .mapToList(new Function<Cursor, TaskDto>() {
                     @Override
-                    public Ribot apply(@NonNull Cursor cursor) throws Exception {
-                        return Ribot.create(Db.RibotProfileTable.parseCursor(cursor));
+                    public TaskDto apply(@NonNull Cursor cursor) throws Exception {
+                        return (Db.RibotProfileTable.parseCursor(cursor));
                     }
                 });
     }

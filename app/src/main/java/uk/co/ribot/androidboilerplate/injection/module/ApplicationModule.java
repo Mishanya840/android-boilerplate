@@ -7,7 +7,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import uk.co.ribot.androidboilerplate.data.remote.RibotsService;
+import uk.co.ribot.androidboilerplate.data.remote.AuthResource;
+import uk.co.ribot.androidboilerplate.data.remote.TaskResource;
 import uk.co.ribot.androidboilerplate.injection.ApplicationContext;
 
 /**
@@ -34,8 +35,14 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    RibotsService provideRibotsService() {
-        return RibotsService.Creator.newRibotsService();
+    TaskResource provideTasksResource() {
+        return TaskResource.Creator.newTaskService(mApplication);
+    }
+
+    @Provides
+    @Singleton
+    AuthResource provideAuthResource() {
+        return AuthResource.Creator.newAuthService(mApplication);
     }
 
 }

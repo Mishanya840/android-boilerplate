@@ -1,5 +1,7 @@
 package uk.co.ribot.androidboilerplate.data;
 
+import android.util.Log;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -9,22 +11,28 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
+import retrofit2.Response;
+import ru.macroplus.webplatform.dto.task.TaskDto;
 import uk.co.ribot.androidboilerplate.data.local.DatabaseHelper;
 import uk.co.ribot.androidboilerplate.data.local.PreferencesHelper;
-import uk.co.ribot.androidboilerplate.data.model.Ribot;
-import uk.co.ribot.androidboilerplate.data.remote.RibotsService;
+import uk.co.ribot.androidboilerplate.data.remote.AuthResource;
+import uk.co.ribot.androidboilerplate.data.remote.TaskResource;
 
 @Singleton
 public class DataManager {
 
-    private final RibotsService mRibotsService;
+    private final TaskResource mTaskResource;
+    private final AuthResource mAuthResource;
     private final DatabaseHelper mDatabaseHelper;
     private final PreferencesHelper mPreferencesHelper;
 
     @Inject
-    public DataManager(RibotsService ribotsService, PreferencesHelper preferencesHelper,
+    public DataManager(TaskResource taskResource,
+                       AuthResource authResource,
+                       PreferencesHelper preferencesHelper,
                        DatabaseHelper databaseHelper) {
-        mRibotsService = ribotsService;
+        mTaskResource = taskResource;
+        mAuthResource = authResource;
         mPreferencesHelper = preferencesHelper;
         mDatabaseHelper = databaseHelper;
     }
@@ -33,19 +41,23 @@ public class DataManager {
         return mPreferencesHelper;
     }
 
-    public Observable<Ribot> syncRibots() {
-        return mRibotsService.getRibots()
-                .concatMap(new Function<List<Ribot>, ObservableSource<? extends Ribot>>() {
+    public Observable<Boolean> isAuth() {
+        return mAuthResource.isAuth();
+    }
+
+    public Observable<TaskDto> syncTasks() {
+        return mTaskResource.getTasks()
+                .concatMap(new Function<List<TaskDto>, ObservableSource<? extends TaskDto>>() {
                     @Override
-                    public ObservableSource<? extends Ribot> apply(@NonNull List<Ribot> ribots)
+                    public ObservableSource<? extends TaskDto> apply(@NonNull List<TaskDto> ribots)
                             throws Exception {
-                        return mDatabaseHelper.setRibots(ribots);
+                        return mDatabaseHelper.setTasks(ribots);
                     }
                 });
     }
 
-    public Observable<List<Ribot>> getRibots() {
-        return mDatabaseHelper.getRibots().distinct();
+    public Observable<List<TaskDto>> getTasks() {
+        return mDatabaseHelper.getTasks().distinct();
     }
 
 }
