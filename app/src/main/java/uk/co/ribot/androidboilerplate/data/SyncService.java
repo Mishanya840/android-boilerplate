@@ -7,18 +7,26 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
 
+import java.net.SocketTimeoutException;
+
 import javax.inject.Inject;
 
+import io.katharsis.repository.response.HttpStatus;
+import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.HttpException;
 import ru.macroplus.webplatform.dto.task.TaskDto;
 import timber.log.Timber;
 import uk.co.ribot.androidboilerplate.BoilerplateApplication;
+import uk.co.ribot.androidboilerplate.ui.singin.SignInActivity;
 import uk.co.ribot.androidboilerplate.util.AndroidComponentUtil;
 import uk.co.ribot.androidboilerplate.util.NetworkUtil;
+import uk.co.ribot.androidboilerplate.util.RetryWithDelay;
 import uk.co.ribot.androidboilerplate.util.RxUtil;
 
 public class SyncService extends Service {
@@ -55,6 +63,20 @@ public class SyncService extends Service {
         mDataManager.syncTasks()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        if ( (throwable instanceof HttpException
+                                && ((HttpException) throwable).code() == HttpStatus.FORBIDDEN_403)
+                                || throwable instanceof SocketTimeoutException) {
+                            Timber.e(throwable, "Not auth in DataManager::syncTasks()");
+                            Intent singInIntent = SignInActivity.getStartIntent(getApplicationContext());
+                            singInIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getApplicationContext().startActivity(singInIntent);
+                        }
+                        Timber.e(throwable, "There was an DataManager::syncTasks() %s", throwable.getClass().toString());
+                    }
+                })
                 .subscribe(new Observer<TaskDto>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {

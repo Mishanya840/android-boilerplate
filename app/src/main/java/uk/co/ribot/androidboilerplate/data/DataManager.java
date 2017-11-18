@@ -1,22 +1,29 @@
 package uk.co.ribot.androidboilerplate.data;
 
-import android.util.Log;
+import android.app.Application;
+import android.content.Intent;
 
+import java.net.SocketTimeoutException;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.katharsis.repository.response.HttpStatus;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import retrofit2.Response;
+import retrofit2.HttpException;
 import ru.macroplus.webplatform.dto.task.TaskDto;
+import timber.log.Timber;
+import uk.co.ribot.androidboilerplate.BoilerplateApplication;
 import uk.co.ribot.androidboilerplate.data.local.DatabaseHelper;
 import uk.co.ribot.androidboilerplate.data.local.PreferencesHelper;
 import uk.co.ribot.androidboilerplate.data.remote.AuthResource;
 import uk.co.ribot.androidboilerplate.data.remote.TaskResource;
+import uk.co.ribot.androidboilerplate.ui.singin.SignInActivity;
 
 @Singleton
 public class DataManager {

@@ -54,7 +54,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         mMainPresenter.attachView(this);
         mMainPresenter.loadRibots();
 
-        startService(AuthService.getStartIntent(this));
+//        startService(AuthService.getStartIntent(this));
 
         if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
             startService(SyncService.getStartIntent(this));

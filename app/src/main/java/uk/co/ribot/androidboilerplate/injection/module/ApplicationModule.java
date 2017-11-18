@@ -16,7 +16,7 @@ import uk.co.ribot.androidboilerplate.injection.ApplicationContext;
  */
 @Module
 public class ApplicationModule {
-    protected final Application mApplication;
+       protected final Application mApplication;
 
     public ApplicationModule(Application application) {
         mApplication = application;

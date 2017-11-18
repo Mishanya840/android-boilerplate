@@ -1,5 +1,7 @@
 package uk.co.ribot.androidboilerplate;
 
+import android.app.Application;
+
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -28,6 +30,7 @@ public class DataManagerTest {
     @Mock PreferencesHelper mMockPreferencesHelper;
     @Mock TaskResource mMockTaskResource;
     @Mock AuthResource mAuthResource;
+    @Mock Application mApplication;
     private DataManager mDataManager;
 
     @Before
@@ -35,7 +38,8 @@ public class DataManagerTest {
         mDataManager = new DataManager(mMockTaskResource,
                 mAuthResource,
                 mMockPreferencesHelper,
-                mMockDatabaseHelper);
+                mMockDatabaseHelper,
+                mApplication);
     }
 
 //    @Test
