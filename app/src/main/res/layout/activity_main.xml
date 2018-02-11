@@ -6,13 +6,13 @@
     android:background="@color/gray"
     tools:context="uk.co.ribot.androidboilerplate.ui.main.MainActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <WebView
+        android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="6dp"
-        android:paddingTop="6dp"
-        android:scrollbars="vertical" />
+        android:layout_height="match_parent"/>
+
+    <!--<video poster="video/star.png" controls>-->
+        <!--<source src="http://broken-links.com/tests/media/BigBuck.m4v" />-->
+    <!--</video>-->
 
 </RelativeLayout>

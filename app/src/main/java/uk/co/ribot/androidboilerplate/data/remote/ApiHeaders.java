@@ -33,6 +33,7 @@ public class ApiHeaders implements Interceptor {
   @Override
   public Response intercept(Chain chain) throws IOException {
     Request original = chain.request();
+    Log.e("Auth","22Account created");
 
     // Request customization: add request headers
     Request.Builder requestBuilder = original.newBuilder()
@@ -41,6 +42,15 @@ public class ApiHeaders implements Interceptor {
 
     AccountManager accountManager = AccountManager.get(application);
     Account[] accounts = accountManager.getAccountsByType(AuthConstants.ACCOUNT_TYPE);
+    if (accounts.length == 0) {
+      Account account = new Account("MyAccount","uk.co.ribot.androidboilerplate.ACCOUNT");
+      boolean success = accountManager.addAccountExplicitly(account,"password",null);
+      if(success){
+        Log.d("Auth","Account created");
+      }else{
+        Log.d("Auth","Account creation failed. Look at previous logs to investigate");
+      }
+    }
     if (accounts.length != 0) {
       String token = accountManager.peekAuthToken(accounts[0], AuthConstants.AUTHTOKEN_TYPE);
       @SuppressLint("WifiManagerLeak") WifiManager manager = (WifiManager) application.getSystemService(Context.WIFI_SERVICE);

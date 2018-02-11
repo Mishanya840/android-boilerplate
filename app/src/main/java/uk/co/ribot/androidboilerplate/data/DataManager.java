@@ -2,6 +2,7 @@ package uk.co.ribot.androidboilerplate.data;
 
 import android.app.Application;
 import android.content.Intent;
+import android.util.Log;
 
 import java.net.SocketTimeoutException;
 import java.util.List;
@@ -27,6 +28,8 @@ import uk.co.ribot.androidboilerplate.ui.singin.SignInActivity;
 
 @Singleton
 public class DataManager {
+
+    private static final String LOG = DataManager.class.getName();
 
     private final TaskResource mTaskResource;
     private final AuthResource mAuthResource;
@@ -56,9 +59,10 @@ public class DataManager {
         return mTaskResource.getTasks()
                 .concatMap(new Function<List<TaskDto>, ObservableSource<? extends TaskDto>>() {
                     @Override
-                    public ObservableSource<? extends TaskDto> apply(@NonNull List<TaskDto> ribots)
+                    public ObservableSource<? extends TaskDto> apply(@NonNull List<TaskDto> taskDtos)
                             throws Exception {
-                        return mDatabaseHelper.setTasks(ribots);
+                        Log.i(LOG, String.format("Save to DB tasks: {}", taskDtos));
+                        return mDatabaseHelper.setTasks(taskDtos);
                     }
                 });
     }

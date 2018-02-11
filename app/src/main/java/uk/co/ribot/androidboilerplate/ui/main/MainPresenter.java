@@ -38,38 +38,12 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
         if (mDisposable != null) mDisposable.dispose();
     }
 
-    public void loadRibots() {
+    public void loadTasks() {
         checkViewAttached();
         RxUtil.dispose(mDisposable);
-        mDataManager.getTasks()
+        mDataManager.syncTasks()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<List<TaskDto>>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        mDisposable = d;
-                    }
-
-                    @Override
-                    public void onNext(@NonNull List<TaskDto> ribots) {
-                        if (ribots.isEmpty()) {
-                            getMvpView().showRibotsEmpty();
-                        } else {
-                            getMvpView().showRibots(ribots);
-                        }
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        Timber.e(e, "There was an error loading the ribots.");
-                        getMvpView().showError();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+                .subscribeOn(Schedulers.io());
     }
 
 }

@@ -45,7 +45,7 @@ public class DatabaseHelperTest {
     }
 
 //    @Test
-//    public void setRibots() {
+//    public void setTasks() {
 //        TaskDto ribot1 = TestDataFactory.makeRibot("r1");
 //        TaskDto ribot2 = TestDataFactory.makeRibot("r2");
 //        List<TaskDto> ribots = Arrays.asList(ribot1, ribot2);
@@ -56,11 +56,11 @@ public class DatabaseHelperTest {
 //        result.assertValueSequence(ribots);
 //
 //        Cursor cursor = mDatabaseHelper.getBriteDb()
-//                .query("SELECT * FROM " + Db.RibotProfileTable.TABLE_NAME);
+//                .query("SELECT * FROM " + Db.TaskProfileTable.TABLE_NAME);
 //        assertEquals(2, cursor.getCount());
 //        for (TaskDto ribot : ribots) {
 //            cursor.moveToNext();
-//            assertEquals(ribot.profile(), Db.RibotProfileTable.parseCursor(cursor));
+//            assertEquals(ribot.profile(), Db.TaskProfileTable.parseCursor(cursor));
 //        }
 //    }
 //

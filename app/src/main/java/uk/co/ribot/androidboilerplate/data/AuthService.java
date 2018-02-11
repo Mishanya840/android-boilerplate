@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 
@@ -30,7 +31,6 @@ public class AuthService extends Service {
     private Disposable mDisposable;
 
     public static Intent getStartIntent(Context context) {
-        System.out.println("1111111111111111111111");
         return new Intent(context, AuthService.class);
     }
 
@@ -50,7 +50,7 @@ public class AuthService extends Service {
 
         if (!NetworkUtil.isNetworkConnected(this)) {
             Timber.i("Auth canceled, connection not available");
-            AndroidComponentUtil.toggleComponent(this, SyncService.SyncOnConnectionAvailable.class, true);
+//            AndroidComponentUtil.toggleComponent(this, SyncService.SyncOnConnectionAvailable.class, true);
             stopSelf(startId);
             return START_NOT_STICKY;
         }
@@ -96,6 +96,7 @@ public class AuthService extends Service {
         super.onDestroy();
     }
 
+    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;

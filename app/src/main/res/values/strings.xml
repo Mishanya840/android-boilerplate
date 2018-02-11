@@ -11,4 +11,5 @@
     <string name="error_loading_ribots">There was a problem loading the ribots</string>
     <string name="auth_key">Auth-key</string>
     <string name="none">None</string>
+    <string name="my_custom_account">account_label</string>
 </resources>

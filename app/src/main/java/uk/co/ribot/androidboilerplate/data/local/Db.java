@@ -11,7 +11,7 @@ public class Db {
 
     public Db() { }
 
-    public abstract static class RibotProfileTable {
+    public abstract static class TaskProfileTable {
         public static final String TABLE_NAME = "task_dto";
 
         public static final String COLUMN_ID = "id";
@@ -21,7 +21,6 @@ public class Db {
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         COLUMN_ID + " INTEGER PRIMARY KEY, " +
                         COLUMN_TITLE + " TEXT NOT NULL " +
-
                 " ); ";
 
         public static ContentValues toContentValues(TaskDto taskDto) {

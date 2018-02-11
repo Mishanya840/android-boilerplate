@@ -38,8 +38,7 @@ public class DataManagerTest {
         mDataManager = new DataManager(mMockTaskResource,
                 mAuthResource,
                 mMockPreferencesHelper,
-                mMockDatabaseHelper,
-                mApplication);
+                mMockDatabaseHelper);
     }
 
 //    @Test

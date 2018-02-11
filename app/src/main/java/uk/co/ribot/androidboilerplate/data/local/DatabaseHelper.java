@@ -49,11 +49,11 @@ public class DatabaseHelper {
                 if (emitter.isDisposed()) return;
                 BriteDatabase.Transaction transaction = mDb.newTransaction();
                 try {
-                    mDb.delete(Db.RibotProfileTable.TABLE_NAME, null);
+                    mDb.delete(Db.TaskProfileTable.TABLE_NAME, null);
                     for (TaskDto task : newTasks) {
                         System.out.println(task.toString());
-                        long result = mDb.insert(Db.RibotProfileTable.TABLE_NAME,
-                                Db.RibotProfileTable.toContentValues(task),
+                        long result = mDb.insert(Db.TaskProfileTable.TABLE_NAME,
+                                Db.TaskProfileTable.toContentValues(task),
                                 SQLiteDatabase.CONFLICT_REPLACE);
                         if (result >= 0) emitter.onNext(task);
                     }
@@ -67,12 +67,12 @@ public class DatabaseHelper {
     }
 
     public Observable<List<TaskDto>> getTasks() {
-        return mDb.createQuery(Db.RibotProfileTable.TABLE_NAME,
-                "SELECT * FROM " + Db.RibotProfileTable.TABLE_NAME)
+        return mDb.createQuery(Db.TaskProfileTable.TABLE_NAME,
+                "SELECT * FROM " + Db.TaskProfileTable.TABLE_NAME)
                 .mapToList(new Function<Cursor, TaskDto>() {
                     @Override
                     public TaskDto apply(@NonNull Cursor cursor) throws Exception {
-                        return (Db.RibotProfileTable.parseCursor(cursor));
+                        return (Db.TaskProfileTable.parseCursor(cursor));
                     }
                 });
     }
