@@ -14,9 +14,11 @@ import uk.co.ribot.androidboilerplate.BoilerplateApplication;
 import uk.co.ribot.androidboilerplate.data.DataManager;
 import uk.co.ribot.androidboilerplate.event.BusEvent;
 
+import static uk.co.ribot.androidboilerplate.util.LogCatTag.AUTH_PROCESS;
+
 public class UnauthorisedInterceptor implements Interceptor {
 
-    private static final String LOG = DataManager.class.getName();
+    private static final String LOG = UnauthorisedInterceptor.class.getName();
 
     RxEventBus eventBus;
 
@@ -29,9 +31,9 @@ public class UnauthorisedInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Response response = chain.proceed(chain.request());
-        Log.e(LOG, "222interceptor");
-        if (response.code() != 200) {
-            Log.e(LOG, String.format("Error : HTTP {}",response.code()));
+        Log.i(LOG, AUTH_PROCESS + "check interceptor");
+        if (response.code() == 403) {
+            Log.w(LOG, AUTH_PROCESS + String.format("Error : HTTP {}",response.code()));
             eventBus.post(new BusEvent.AuthenticationError()); // post event AuthenticationError
         }
         return response;

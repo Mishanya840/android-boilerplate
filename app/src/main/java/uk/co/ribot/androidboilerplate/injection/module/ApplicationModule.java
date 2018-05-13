@@ -18,7 +18,7 @@ import uk.co.ribot.androidboilerplate.data.remote.ApiHeaders;
 import uk.co.ribot.androidboilerplate.data.remote.AuthResource;
 import uk.co.ribot.androidboilerplate.data.remote.TaskResource;
 import uk.co.ribot.androidboilerplate.injection.ApplicationContext;
-import uk.co.ribot.androidboilerplate.util.AuthAccountManager;
+import uk.co.ribot.androidboilerplate.util.AuthTokenHolder;
 import uk.co.ribot.androidboilerplate.util.Config;
 import uk.co.ribot.androidboilerplate.util.MyGsonTypeAdapterFactory;
 import uk.co.ribot.androidboilerplate.util.UnauthorisedInterceptor;
@@ -72,8 +72,8 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    AuthAccountManager authAccountManager(){
-        return new AuthAccountManager();
+    AuthTokenHolder authAccountManager(){
+        return new AuthTokenHolder();
     }
 
     @Provides

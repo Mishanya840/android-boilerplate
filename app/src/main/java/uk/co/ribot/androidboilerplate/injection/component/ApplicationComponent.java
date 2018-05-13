@@ -14,7 +14,7 @@ import uk.co.ribot.androidboilerplate.data.local.PreferencesHelper;
 import uk.co.ribot.androidboilerplate.data.remote.TaskResource;
 import uk.co.ribot.androidboilerplate.injection.ApplicationContext;
 import uk.co.ribot.androidboilerplate.injection.module.ApplicationModule;
-import uk.co.ribot.androidboilerplate.util.AuthAccountManager;
+import uk.co.ribot.androidboilerplate.util.AuthTokenHolder;
 import uk.co.ribot.androidboilerplate.util.RxEventBus;
 import uk.co.ribot.androidboilerplate.util.UnauthorisedInterceptor;
 
@@ -36,7 +36,7 @@ public interface ApplicationComponent {
     DataManager dataManager();
     RxEventBus eventBus();
     Retrofit retrofit();
-    AuthAccountManager authAccountManager();
+    AuthTokenHolder authAccountManager();
 
 }
 

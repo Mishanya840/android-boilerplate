@@ -31,6 +31,8 @@ import uk.co.ribot.androidboilerplate.ui.base.BaseActivity;
 import uk.co.ribot.androidboilerplate.ui.singin.SignInActivity;
 import uk.co.ribot.androidboilerplate.util.DialogFactory;
 
+import static uk.co.ribot.androidboilerplate.util.LogCatTag.AUTH_PROCESS;
+
 public class MainActivity extends BaseActivity implements MainMvpView {
 
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
@@ -67,9 +69,9 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
                     @Override
                     public void accept(Object o) throws Exception {
-                        Log.i(LOG, "Changes");
+                        Log.i(LOG, AUTH_PROCESS + "Changes");
                         if (o instanceof BusEvent.AuthenticationError) {
-                            Log.i(LOG, "BusEvent.AuthenticationError");
+                            Log.i(LOG, AUTH_PROCESS + "BusEvent.AuthenticationError");
                             startActivity(SignInActivity.getStartIntent(getApplicationContext()));
                         }
                     }
