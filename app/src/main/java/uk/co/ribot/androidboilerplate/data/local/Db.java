@@ -5,6 +5,7 @@ import android.database.Cursor;
 
 import java.util.Date;
 
+import ru.macroplus.webplatform.dto.task.EveryDayTaskDto;
 import ru.macroplus.webplatform.dto.task.TaskDto;
 
 public class Db {
@@ -31,7 +32,7 @@ public class Db {
         }
 
         public static TaskDto parseCursor(Cursor cursor) {
-            TaskDto taskDto = new TaskDto();
+            TaskDto taskDto = new EveryDayTaskDto();
             taskDto.setId((cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))));
             taskDto.setTitle((cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE))));
 
