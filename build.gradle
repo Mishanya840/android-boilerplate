@@ -16,6 +16,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
+        maven { url "https://jitpack.io" }
         google()
     }
 }
@@ -24,3 +25,9 @@ task wrapper(type: Wrapper) {
     gradleVersion = '3.3'
     distributionUrl = distributionUrl.replace("bin", "all")
 }
+
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
