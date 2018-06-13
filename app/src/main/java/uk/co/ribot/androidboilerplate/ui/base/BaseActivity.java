@@ -6,9 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import dagger.android.DaggerActivity;
 import timber.log.Timber;
 import uk.co.ribot.androidboilerplate.BoilerplateApplication;
-import uk.co.ribot.androidboilerplate.injection.component.ActivityComponent;
+import uk.co.ribot.androidboilerplate.injection.component.ActivitySubcomponent;
 import uk.co.ribot.androidboilerplate.injection.component.ConfigPersistentComponent;
 import uk.co.ribot.androidboilerplate.injection.module.ActivityModule;
 
@@ -17,21 +18,21 @@ import uk.co.ribot.androidboilerplate.injection.module.ActivityModule;
  * creation of Dagger components and makes sure that instances of ConfigPersistentComponent survive
  * across configuration changes.
  */
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends DaggerActivity {
 
     private static final String KEY_ACTIVITY_ID = "KEY_ACTIVITY_ID";
     private static final AtomicLong NEXT_ID = new AtomicLong(0);
     private static final LongSparseArray<ConfigPersistentComponent>
             sComponentsMap = new LongSparseArray<>();
 
-    private ActivityComponent mActivityComponent;
+    private ActivitySubcomponent mActivitySubcomponent;
     private long mActivityId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Create the ActivityComponent and reuses cached ConfigPersistentComponent if this is
+        // Create the ActivitySubcomponent and reuses cached ConfigPersistentComponent if this is
         // being called after a configuration change.
         mActivityId = savedInstanceState != null ?
                 savedInstanceState.getLong(KEY_ACTIVITY_ID) : NEXT_ID.getAndIncrement();
@@ -45,7 +46,7 @@ public class BaseActivity extends AppCompatActivity {
                     .build();
             sComponentsMap.put(mActivityId, configPersistentComponent);
         }
-        mActivityComponent = configPersistentComponent.activityComponent(new ActivityModule(this));
+        mActivitySubcomponent = configPersistentComponent.activityComponent(new ActivityModule(this));
     }
 
     @Override
@@ -63,8 +64,8 @@ public class BaseActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public ActivityComponent activityComponent() {
-        return mActivityComponent;
+    public ActivitySubcomponent activityComponent() {
+        return mActivitySubcomponent;
     }
 
 }

@@ -3,6 +3,7 @@ package uk.co.ribot.androidboilerplate.injection.component;
 import android.content.Context;
 
 import dagger.Subcomponent;
+import dagger.android.AndroidInjector;
 import uk.co.ribot.androidboilerplate.injection.ApplicationContext;
 import uk.co.ribot.androidboilerplate.injection.PerActivity;
 import uk.co.ribot.androidboilerplate.injection.module.ActivityModule;
@@ -14,7 +15,7 @@ import uk.co.ribot.androidboilerplate.ui.singin.SignInActivity;
  */
 @PerActivity
 @Subcomponent(modules = ActivityModule.class)
-public interface ActivityComponent {
+public interface ActivitySubcomponent {
 
     void inject(MainActivity mainActivity);
     void inject(SignInActivity signInActivity);

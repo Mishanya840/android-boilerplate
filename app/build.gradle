@@ -4,6 +4,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'maven'
 //TODO uncomment line below after adding fabric api secret and key to fabric.properties
 //apply plugin: 'io.fabric'
+
 repositories {
     maven { url "https://jitpack.io" }
     mavenLocal()
@@ -104,7 +105,7 @@ dependencies {
     final PLAY_SERVICES_VERSION = '15.0.1'
     final SUPPORT_LIBRARY_VERSION = '26.1.0'
     final RETROFIT_VERSION = '2.3.0'
-    final DAGGER_VERSION = '2.14.4'
+    final DAGGER_VERSION = '2.16'
     final MOCKITO_VERSION = '2.6.2'
     final HAMCREST_VERSION = '1.3'
     final ESPRESSO_VERSION = '2.2.1'
@@ -164,13 +165,11 @@ dependencies {
 //    compileOnly 'org.glassfish:javax.annotation:10.0-b28'
 
     implementation  "com.google.dagger:dagger:$DAGGER_VERSION"
-    annotationProcessor daggerCompiler
 
-    compile "com.google.dagger:dagger-android:$DAGGER_VERSION"
+    implementation "com.google.dagger:dagger-android:$DAGGER_VERSION"
+    implementation "com.google.dagger:dagger-android-support:$DAGGER_VERSION"    //support libraries with dagger 2
     annotationProcessor "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"
 
-    //support libraries with dagger 2
-    compile "com.google.dagger:dagger-android-support:$DAGGER_VERSION"
 
     compileOnly 'org.glassfish:javax.annotation:10.0-b28' //Required by Dagger2
     testAnnotationProcessor daggerCompiler
